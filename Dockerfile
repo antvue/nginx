@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.15.8.3-alpine-fat
+FROM openresty/openresty:1.19.3.2-alpine-fat
 
 LABEL maintainer="hupeng.net@hotmail.com"
 
