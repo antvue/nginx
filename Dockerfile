@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.19.3.2-alpine-fat
+FROM openresty/openresty:alpine-fat
 
 LABEL maintainer="hupeng.net@hotmail.com"
 
@@ -9,6 +9,9 @@ VOLUME ["/usr/local/openresty/nginx/conf/conf.d", "/usr/local/openresty/nginx/lo
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
 ADD fs/ /
+
+RUN ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log && \
+  ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
 
 RUN apk update && \
   apk add --no-cache vim bind-tools zip curl wget && \
