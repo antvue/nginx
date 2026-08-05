@@ -1,0 +1,29 @@
+# antvue/nginx 部署模版
+# 用法:
+#   1. 准备 ./config 目录(挂到 conf.d):站点配置以 .conf 结尾放根目录,证书放子目录
+#   2. 准备 ./log 目录(挂到 nginx logs)
+#   3. docker compose up -d
+#
+# 说明:
+#   - network_mode: host —— 直接用宿主机网络,80/443 及 stream 端口无需逐个映射
+#   - ulimits.nofile 65535 —— 抬高 fd 上限,配合 nginx.conf 的 worker_connections
+#   - 站点 .conf 命名 & 证书目录规则见 readme.md
+
+services:
+  server01:
+    image: antvue/nginx
+    restart: always
+    hostname: nginx
+    container_name: nginx
+    network_mode: host
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - ./config:/usr/local/openresty/nginx/conf/conf.d
+      - ./log:/usr/local/openresty/nginx/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
